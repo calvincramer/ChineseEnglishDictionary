@@ -1,0 +1,94 @@
+A#animals
+D#directions
+F#food
+G#greeting
+H#home
+M#names
+N#numbers
+O#occupation
+P#practice
+S#skip
+Z#missing information
+#######################################
+(plural marker for pronouns, and nouns referring to individuals)#men#们
+also#yě#也#G
+Bhudda#fú#佛#M
+broken#pò#破
+brother#gēge#呵呵#M
+bye bye#bài bài#拜拜#G
+call/called#jiào#叫#M
+Canadian#jiānádārén#加拿大人
+Chinese character#hànzì#汉字#P
+chopsticks#kuàizi#筷子#PF
+cola#kělè#可乐#F
+doctor#yīshēng#医生#O
+drink#hē#喝#F
+eat#chī#吃#F
+eggs#dàn#蛋#F
+Eight#ba#八#N
+entrance#rǔkǒu#入口#H
+excited#xīngfèn#兴奋#P
+exit#chūkǒu#出口#D
+father#bàba#爸爸#M
+fire#huǒ#火
+fish#yú#鱼#F
+Five#wǔ#五#N
+fork#chāzi#叉子#PF
+Four#sì#四#N
+GOOD#hǎo#好
+goodbye#zài jiàn#再见
+grandma (mom's side)#wàipó#外婆#M
+happy#gāoxìng#高兴#G
+he#tā#他
+hello#nǐ hǎo#你很
+horse#mǎ#马#A
+how many? / how much?#duōshǎo#多少
+Hundred#bǎi#百#N
+hungry#è#饿
+I#wǒ#我
+is/be#shì#是
+journal#rìzhì#日志#P
+know#zhīdào#知道#P
+know/recognize#rènshì#认识#G
+love (noun)#àiqíng#爱情
+love (verb)#ài#爱
+male#nán#男
+name (first)#míngzì#名字#PG
+Nice to meet you too#Rènshì nǐ wǒ yě hěn gāoxìng#认识你我也很高兴#G
+Nine#jiǔ#九#N
+no/not/do not#bù#不
+noodles#miàn#面#F
+number#hàomǎ#号码#G
+One#yī#一#N
+peanut#huāshēng#花生#PF
+pig#zhū#猪#AF
+point (o' clock)#diǎn#点
+rice#fàn#饭#F
+sad#shāngxīn#伤心#P
+Seven#qī#七#N
+she#tā#她
+shrimp dumpling#xiā jiǎo#虾饺#PF
+Six#liú#六#N
+spicy / hot#là#辣#F
+spoon#sháo#勺#PFH
+student#xuéshēng#学生#O
+surname#xìng#姓#M
+table#biǎo#表#PFH
+tea#chá#茶#F
+teacher#lǎoshī#老师#O
+telephone#diànhuà#电话
+Ten#shí#十#N
+thirsty#kě#渴#F
+Three#sān#三#N
+tower#tǎ#塔
+Two#èr#二#N
+very#hěn#很#G
+walnut#hétáo#核桃#F
+water#shuǐ#水#F
+watermellon#xīguā#西瓜#F
+waves#làng#浪
+what#shénme#什么#PM
+What country are they from?#tāmen shì nǎ guórén?#他们是哪国人？
+You#nǐ#你
+yuan#yuán#元#N
+Zero#líng#零#N
