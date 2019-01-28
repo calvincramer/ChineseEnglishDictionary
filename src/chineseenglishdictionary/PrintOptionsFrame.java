@@ -51,8 +51,7 @@ import javax.swing.border.TitledBorder;
 
 public class PrintOptionsFrame 
     extends JFrame {
-    
-
+   
     private JPanel topPanel;
         private JPanel printerPanel;
             private JButton selectDefaultPrinterButton;
@@ -103,7 +102,8 @@ public class PrintOptionsFrame
     private static Random rng = new Random(System.currentTimeMillis());
 
     
-    public PrintOptionsFrame(List<Entry> entries, Map<Character, String> flags) {
+    public PrintOptionsFrame(List<Entry> entries, Map<Character, String> flags) 
+    {
         super("Printing Options");
         this.entries = entries;
         this.selectedEntries = new boolean[entries.size()];
@@ -132,14 +132,16 @@ public class PrintOptionsFrame
         this.setLocation(dim.width/2 - this.getSize().width/2, dim.height/2 - this.getSize().height/2);
     }
     
-    protected void showOnScreen() {
+    protected void showOnScreen() 
+    {
         this.setAlwaysOnTop(true);
         this.setVisible(true);
         this.toFront();
     }
     
     
-    private void init() {
+    private void init() 
+    {
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setTitle("Printing Options");
         this.setResizable(false);
@@ -365,11 +367,13 @@ public class PrintOptionsFrame
         this.pack();
     }
     
-    private void setToDefaultPrinterButtonPressed() {
+    private void setToDefaultPrinterButtonPressed() 
+    {
         this.printerComboBox.setSelectedItem(this.defaultPrintService.getName());
     }
     
-    private void typeButtonChanged() {
+    private void typeButtonChanged() 
+    {
         if (this.showAllButton.isSelected())
             this.printAnswersCheckBox.setSelected(false);
         else
@@ -392,7 +396,8 @@ public class PrintOptionsFrame
         //System.out.println("currently selected type: " + this.currentlySelectedType.getText());
     }
     
-    private void selectButtonChanged() {
+    private void selectButtonChanged() 
+    {
         filterChanged();
         if (this.selectByFlagsButton.isSelected()) {
             this.includeFlagsButton.setEnabled(true);
@@ -408,7 +413,8 @@ public class PrintOptionsFrame
         }
     }
     
-    private void limitEntriesButtonChanged() {
+    private void limitEntriesButtonChanged() 
+    {
         if (this.limitEntries.isSelected()) {
             this.limitEntriesTextField.setText("80");
         }
@@ -417,7 +423,8 @@ public class PrintOptionsFrame
         }
     }
     
-    private void filterChanged() {
+    private void filterChanged() 
+    {
         if (this.selectRandomlyButton.isSelected()) {
             for (int i = 0; i < this.selectedEntries.length; i++)
                 selectedEntries[i] = true;
@@ -481,7 +488,8 @@ public class PrintOptionsFrame
         }
     }
     
-    private void printPressed() {
+    private void printPressed() 
+    {
         this.setVisible(false);
         
         //create list of entries to be printed
@@ -554,12 +562,14 @@ public class PrintOptionsFrame
         this.exitButtonPressed();
     }
 
-    private void exitButtonPressed() {
+    private void exitButtonPressed() 
+    {
         this.setVisible(false);
         this.dispose();
     }
     
-    public static <E> List<E> shuffle(List<E> list) {
+    public static <E> List<E> shuffle(List<E> list) 
+    {
         List<E> shuffled = new ArrayList<>();
         
         for (E el : list)
@@ -568,7 +578,8 @@ public class PrintOptionsFrame
         
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
@@ -598,7 +609,8 @@ public class PrintOptionsFrame
     /**
      * Creates the image for the paper
      */
-    private class EntryPagePrinter implements Printable {
+    private class EntryPagePrinter implements Printable 
+    {
         List<Entry> entriesToPrint;
         Type type;
         
@@ -859,11 +871,13 @@ public class PrintOptionsFrame
         }
     }
     
-    private enum EntryType {
+    private enum EntryType 
+    {
         ENGLISH, PINYIN, CHARACTERS
     }
     
-    private enum Type {
+    private enum Type 
+    {
         HIDE_ENGLISH, HIDE_PINYIN, HIDE_CHARACTERS,
         HIDE_ENGLISH_PINYIN, HIDE_ENGLISH_CHARACTERS, HIDE_PINYIN_CHARACTERS,
         HIDE_RANDOM_ENGLISH_PINYIN, HIDE_RANDOM_ENGLISH_CHARACTERS, HIDE_RANDOM_PINYIN_CHARACTERS,

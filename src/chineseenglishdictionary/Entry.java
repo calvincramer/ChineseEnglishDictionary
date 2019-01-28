@@ -24,7 +24,8 @@ public  class Entry
     Map<String, Boolean> flags;
 
 
-    public Entry(String english, String pinyin, String characters) {
+    public Entry(String english, String pinyin, String characters) 
+    {
         this.english = english;
         this.pinyin = pinyin;
         this.characters = characters;
@@ -32,7 +33,8 @@ public  class Entry
     }
 
     //for deep copy
-    public Entry(Entry other) {
+    public Entry(Entry other) 
+    {
         this.english = other.english;
         this.pinyin = other.pinyin;
         this.characters = other.characters;
@@ -42,12 +44,14 @@ public  class Entry
     }
 
 
-    public void addFlag(String key, boolean value) {
+    public void addFlag(String key, boolean value) 
+    {
         this.flags.put(key, value);
     }
 
     @Override
-    public String toString() {
+    public String toString() 
+    {
         int lengthEng = (((english.length()     - 1) / 8) + 1) * 8;
         int lengthPin = (((pinyin.length()      - 1) / 8) + 1) * 8;
         int lengthCh  = (((characters.length()  - 1) / 4) + 1) * 4;
@@ -75,7 +79,8 @@ public  class Entry
         return s.trim() + "]";
     }
 
-    public String toStringCompact() {
+    public String toStringCompact() 
+    {
         String s = "[" + english + " - " + pinyin + " - " + characters;
 
         int setFields = 0;
@@ -98,7 +103,8 @@ public  class Entry
         return s.trim() + "]";
     }
 
-    public String toFileEntryString() {
+    public String toFileEntryString() 
+    {
         String s = this.english + "#" + this.pinyin + "#" + this.characters;
         boolean atLeastOneTrueFlag = false;
         for (String flag : this.flags.keySet()) {

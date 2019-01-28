@@ -47,7 +47,8 @@ public class Main {
     protected static final Map<Character, String> flagHash = new HashMap<Character, String>();
     protected static final Map<String, Character> reverseFlagHash = new HashMap<>();
     
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         //read data from file
         String[] fileData = Util.readFile(fileName);
         
@@ -150,14 +151,16 @@ public class Main {
     /**
      * Creates new print screen dialog
      */
-    private static void printStart() {
+    private static void printStart() 
+    {
         System.out.println("Opening print dialog...");
         PrintOptionsFrame pof = new PrintOptionsFrame(entries, flagHash);
         pof.showOnScreen();
     }
     
     
-    private static void changeEntry(int index) {
+    private static void changeEntry(int index) 
+    {
         //actually change entry 
         System.out.println("Change " + entries.get(index).toStringCompact() + " by which field? (0 to exit)");
         System.out.println("(1) - English");
@@ -210,7 +213,8 @@ public class Main {
     }
     
     
-    private static void changeEntryStart() {
+    private static void changeEntryStart() 
+    {
         System.out.println("Select entry to change by? (0 to exit)");
         System.out.println("(1) - id (index)");
         System.out.println("(2) - english");
@@ -295,7 +299,8 @@ public class Main {
      * Gets and returns a 'Y' or 'N' from the user
      * @return 
      */
-    private static char getYesNo() {
+    private static char getYesNo() 
+    {
         char c = '\0';
         do {
             c = Character.toUpperCase(in.nextLine().trim().charAt(0));
@@ -310,7 +315,8 @@ public class Main {
      * Go over again
      * @param entries 
      */
-    private static void deleteEntry() {
+    private static void deleteEntry() 
+    {
         System.out.println("DELETE BY? (0 to exit):");
         System.out.println("(1) - id (index)");
         System.out.println("(2) - ENGLISH");
@@ -394,7 +400,8 @@ public class Main {
      * Should be the only method that deletes an entry from the dictionary
      * @param index 
      */
-    public static void delete(int index) {
+    public static void delete(int index) 
+    {
         if (index < 0 || index >= entries.size()) {
             System.out.println("ERROR TRYING TO DELETE OUT OF BOUNDS OF DICTIONARY");
             return;
@@ -411,7 +418,8 @@ public class Main {
      * @param prefixMessage
      * @return 
      */
-    private static int getNumberFromUser(int low, int high, String prefixMessage) {
+    private static int getNumberFromUser(int low, int high, String prefixMessage) 
+    {
         int choice = Integer.MIN_VALUE;
         do {
             System.out.print(prefixMessage + userPrompt);
@@ -424,7 +432,8 @@ public class Main {
     }
     
     
-    private static List<Entry> selectByFlags(boolean allowMultipleSelection) {
+    private static List<Entry> selectByFlags(boolean allowMultipleSelection) 
+    {
         if (allowMultipleSelection) System.out.println("MULTIPLE ENTRY SELECTION IS NOT FULLY SUPPORTED");
         System.out.print("Select by flags by typing the character for each flag: ");
         if (allowMultipleSelection) System.out.println("(can select more than one)");
@@ -473,7 +482,8 @@ public class Main {
      * Prints stuff from the dictionary according to how user wants
      * @param entries 
      */
-    private static void printToScreen() {
+    private static void printToScreen() 
+    {
         System.out.println("How would you like to print? (0 to exit):");
         System.out.println("(1) - entire dictionary");
         System.out.println("(2) - most recently added entry");
@@ -562,7 +572,8 @@ public class Main {
      * @param entries
      * @param toAdd 
      */
-    private static int insertInOrder(Entry toAdd) {
+    private static int insertInOrder(Entry toAdd) 
+    {
         int index = 0;
         for (int i = 0; i < entries.size(); i++) {
             if (toAdd.compareTo(entries.get(i)) <= 0)
@@ -574,7 +585,8 @@ public class Main {
     }
     
     
-    private static void findEntryStart() {
+    private static void findEntryStart() 
+    {
         List<Integer> result = findEntry();
         if (result == null) {}
         else if (result.size() == 0)    System.out.println("could not find any matching entries");
@@ -591,7 +603,8 @@ public class Main {
      * @param entries
      * @return 
      */
-    private static List<Integer> findEntry() {
+    private static List<Integer> findEntry() 
+    {
         //find by exact english, exact pinyin, exact chinese, or starting with english, pinyin, chinese
         System.out.println("How you would like to find? (0 to exit):");
         System.out.println("(1) - english: search term can come up anywhere");
@@ -648,7 +661,8 @@ public class Main {
     }
     
     
-    private static String getFlagsFromUser() {
+    private static String getFlagsFromUser() 
+    {
         String inp = in.nextLine().trim().toUpperCase();
         String flags = "";
         for (char c : inp.toCharArray()) {
@@ -658,7 +672,8 @@ public class Main {
         return flags;
     }
     
-    private static String getFlagString() {
+    private static String getFlagString() 
+    {
         String s = "";
         for (char c : flagHash.keySet()) {
             s += "[" + c + " = " + flagHash.get(c) + "]";
@@ -672,7 +687,8 @@ public class Main {
      * Should be the only method that adds an entry to the dictionary
      * @param e 
      */
-    private static void add(Entry e) {
+    private static void add(Entry e) 
+    {
         int index = insertInOrder(e);       //add in order
         mostRecentlyAddedEntry = e;
         mostRecentlyAddedIndex = index;
@@ -681,7 +697,8 @@ public class Main {
     }
     
     
-    private static void addMostRecentEntryBack() {
+    private static void addMostRecentEntryBack() 
+    {
         if (mostRecentlyDeletedEntry == null) {
             System.out.println("There is not recently deleted entry!");
         }
@@ -699,7 +716,8 @@ public class Main {
     /**
      * Guides the user adding a new entry
      */
-    private static void addEntryStart() {
+    private static void addEntryStart() 
+    {
         System.out.println("Add entry by: (0 to exit)");
         System.out.println("(1) - English, pinyin, Chinese characters without flags");
         System.out.println("(2) - same as above with flags");
@@ -744,7 +762,8 @@ public class Main {
      * Gets the information for a new entry from the user
      * @return 
      */
-    private static Entry inputEntry() {
+    private static Entry inputEntry() 
+    {
         System.out.print("ADDING ENTRY:\nEnglish: ");
         String eng = in.nextLine().trim();
         System.out.print("Pin-yin: ");
@@ -765,7 +784,8 @@ public class Main {
      * @param fileName
      * @param print 
      */
-    private static void saveEntriesToFile(String fileName, boolean print) {
+    private static void saveEntriesToFile(String fileName, boolean print) 
+    {
         //convert flags back to file string form
         String[] flagsData = new String[flagHash.size()];
         int index = 0;
@@ -793,14 +813,16 @@ public class Main {
      * Print the list of entries to standard out
      * @param entries 
      */
-    private static void printEntries(List<Entry> entries) {
+    private static void printEntries(List<Entry> entries) 
+    {
         for (int i = 0; i < entries.size(); i++) {
             System.out.println(Util.strWidth(""+i, 2) + ": " + entries.get(i));
         }
     }
     
     
-    private static void printFlags() {
+    private static void printFlags() 
+    {
         //print alphabetically
         Map<Character, String> tempFlags = new TreeMap<Character, String>(flagHash);
         //Collections.sort(flagsTemp);

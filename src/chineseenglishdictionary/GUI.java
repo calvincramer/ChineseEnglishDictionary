@@ -41,18 +41,21 @@ public class GUI extends JFrame {
             private JTable table;
 
             
-    public GUI() {
+    public GUI() 
+    {
         this(null);
     }
     
-    public GUI(Database db) {
+    public GUI(Database db) 
+    {
         this.db = db;
         
         this.initGUI();
         this.centerFrame();
     }    
     
-    private void initGUI() {
+    private void initGUI() 
+    {
         //make menubar, table
         //save feature, 
         //open feature
@@ -139,14 +142,16 @@ public class GUI extends JFrame {
     
     
     @Override 
-    public void paint(Graphics g) {
+    public void paint(Graphics g) 
+    {
         
     }
     
     /**
      * Centers the frame in the window
      */
-    private void centerFrame() {
+    private void centerFrame() 
+    {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) screenSize.getWidth();
         int height = (int) screenSize.getHeight();
@@ -156,7 +161,8 @@ public class GUI extends JFrame {
     }
     
     
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         new GUI().setVisible(true);
     }
 }

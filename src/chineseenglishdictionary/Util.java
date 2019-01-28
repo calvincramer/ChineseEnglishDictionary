@@ -25,7 +25,8 @@ public class Util {
      * @param url
      * @return 
      */
-    protected static String[] readFile(String url) {
+    protected static String[] readFile(String url) 
+    {
         Scanner reader;
         List<String> lines = new ArrayList<>();
 
@@ -49,7 +50,8 @@ public class Util {
      * @param url
      * @return 
      */
-    protected static boolean writeFile(String data, String url) {
+    protected static boolean writeFile(String data, String url) 
+    {
         
         try {
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(url), StandardCharsets.UTF_8);
@@ -74,7 +76,8 @@ public class Util {
      * @param url
      * @return 
      */
-    protected static boolean writeFile(String[] preamble, String header, String data[], String url) {
+    protected static boolean writeFile(String[] preamble, String header, String data[], String url) 
+    {
         
         try {
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(url), StandardCharsets.UTF_8);
@@ -107,7 +110,8 @@ public class Util {
      * @param url
      * @return 
      */
-    protected static boolean writeFile(String header, String data[], String url) {
+    protected static boolean writeFile(String header, String data[], String url) 
+    {
         
         try {
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(url), StandardCharsets.UTF_8);
@@ -135,7 +139,8 @@ public class Util {
      * @param length length of characters desired
      * @return a string to be at minimum length characters long
      */
-    protected static String strWidth(String string, int length) {
+    protected static String strWidth(String string, int length) 
+    {
         return String.format("%-" + length + "s", string);
     }
     

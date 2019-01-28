@@ -4,7 +4,8 @@ import java.nio.charset.Charset;
 
 public class Testing {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         Charset utf8 = Charset.forName("UTF-8");
         Charset utf16 = Charset.forName("UTF-16");
         
