@@ -1,6 +1,5 @@
 package chineseenglishdictionary;
 
-import chineseenglishdictionary.Main.Entry;
 import java.nio.charset.Charset;
 
 public class Testing {

@@ -1,6 +1,6 @@
 package chineseenglishdictionary;
 
-import chineseenglishdictionary.Main.Entry;
+import chineseenglishdictionary.Entry;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
