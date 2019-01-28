@@ -112,10 +112,6 @@ public class PrintOptionsFrame
         this.selectButtonChanged();
         this.limitEntriesButtonChanged();
         
-        this.setAlwaysOnTop(true);
-        this.setVisible(true);
-        this.toFront();
-        
         //map
         this.typeMap = new HashMap<>();
         this.typeMap.put(this.hideEnglishButton,                Type.HIDE_ENGLISH);
@@ -134,6 +130,12 @@ public class PrintOptionsFrame
         //centeering
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2 - this.getSize().width/2, dim.height/2 - this.getSize().height/2);
+    }
+    
+    protected void showOnScreen() {
+        this.setAlwaysOnTop(true);
+        this.setVisible(true);
+        this.toFront();
     }
     
     
