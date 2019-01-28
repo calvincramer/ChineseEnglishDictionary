@@ -47,6 +47,11 @@ public class Main {
     protected static final Map<Character, String> flagHash = new HashMap<Character, String>();
     protected static final Map<String, Character> reverseFlagHash = new HashMap<>();
     
+    
+    /**
+     * Main control loop
+     * @param args unused
+     */
     public static void main(String[] args) 
     {
         //read data from file
@@ -159,6 +164,10 @@ public class Main {
     }
     
     
+    /**
+     * TODO: ADD DOCUMENTATION
+     * @param index 
+     */
     private static void changeEntry(int index) 
     {
         //actually change entry 
@@ -213,6 +222,9 @@ public class Main {
     }
     
     
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
     private static void changeEntryStart() 
     {
         System.out.println("Select entry to change by? (0 to exit)");
@@ -297,7 +309,7 @@ public class Main {
     
     /**
      * Gets and returns a 'Y' or 'N' from the user
-     * @return 
+     * @return a character 'Y' or 'N'
      */
     private static char getYesNo() 
     {
@@ -398,7 +410,7 @@ public class Main {
     
     /**
      * Should be the only method that deletes an entry from the dictionary
-     * @param index 
+     * @param index index to delete
      */
     public static void delete(int index) 
     {
@@ -410,6 +422,7 @@ public class Main {
         System.out.println("Deleted " + mostRecentlyDeletedEntry.toStringCompact() + " from the dictionary");
         
     }
+    
     
     /**
      * Gets a single number from the user, low high inclusive
@@ -432,6 +445,11 @@ public class Main {
     }
     
     
+    /**
+     * TODO: ADD DOCUMENTATION
+     * @param allowMultipleSelection
+     * @return 
+     */
     private static List<Entry> selectByFlags(boolean allowMultipleSelection) 
     {
         if (allowMultipleSelection) System.out.println("MULTIPLE ENTRY SELECTION IS NOT FULLY SUPPORTED");
@@ -477,6 +495,7 @@ public class Main {
         
         return selectedEntries;
     }
+    
     
     /**
      * Prints stuff from the dictionary according to how user wants
@@ -569,7 +588,6 @@ public class Main {
     /**
      * Does it in dumb O(n)
      * TODO: better insert algorithm
-     * @param entries
      * @param toAdd 
      */
     private static int insertInOrder(Entry toAdd) 
@@ -585,6 +603,9 @@ public class Main {
     }
     
     
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
     private static void findEntryStart() 
     {
         List<Integer> result = findEntry();
@@ -597,11 +618,11 @@ public class Main {
         }
     }
     
+    
     /**
      * Accepts user input to search through the dictionary
      * Will return a list of matching indices, null if the user quits early, and a list of zero size if nothing matches
-     * @param entries
-     * @return 
+     * @return a list of matching indices
      */
     private static List<Integer> findEntry() 
     {
@@ -661,6 +682,10 @@ public class Main {
     }
     
     
+    /**
+     * TODO: ADD DOCUMENTATION
+     * @return 
+     */
     private static String getFlagsFromUser() 
     {
         String inp = in.nextLine().trim().toUpperCase();
@@ -672,6 +697,11 @@ public class Main {
         return flags;
     }
     
+    
+    /**
+     * TODO: ADD DOCUMENTATION
+     * @return 
+     */
     private static String getFlagString() 
     {
         String s = "";
@@ -697,6 +727,9 @@ public class Main {
     }
     
     
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
     private static void addMostRecentEntryBack() 
     {
         if (mostRecentlyDeletedEntry == null) {
@@ -821,6 +854,9 @@ public class Main {
     }
     
     
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
     private static void printFlags() 
     {
         //print alphabetically

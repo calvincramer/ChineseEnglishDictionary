@@ -40,12 +40,20 @@ public class GUI extends JFrame {
         private JScrollPane tableScrollPane;
             private JTable table;
 
-            
+    
+    /**
+     * Creates a new GUI frame with a default table of entries
+     */    
     public GUI() 
     {
         this(null);
     }
     
+    
+    /**
+     * Creates a new GUI frame with a specified database
+     * @param db Database to use
+     */
     public GUI(Database db) 
     {
         this.db = db;
@@ -54,6 +62,10 @@ public class GUI extends JFrame {
         this.centerFrame();
     }    
     
+    
+    /**
+     * Creates all of the components, sizes and packs them into the frame
+     */
     private void initGUI() 
     {
         //make menubar, table
@@ -140,15 +152,10 @@ public class GUI extends JFrame {
     }
     
     
-    
-    @Override 
-    public void paint(Graphics g) 
-    {
-        
-    }
-    
     /**
-     * Centers the frame in the window
+     * Puts the frame in the center of the screen
+     * Note that the frame needs to be packed first in order for the get height
+     * and get width functions to give the correct numbers
      */
     private void centerFrame() 
     {
@@ -161,6 +168,10 @@ public class GUI extends JFrame {
     }
     
     
+    /**
+     * Creates a default GUI window
+     * @param args unused
+     */
     public static void main(String[] args) 
     {
         new GUI().setVisible(true);

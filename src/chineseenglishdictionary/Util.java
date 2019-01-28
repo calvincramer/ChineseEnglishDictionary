@@ -13,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -20,10 +21,12 @@ import java.util.Scanner;
  */
 public class Util {
     
+    private static final Random RNG = new Random(System.currentTimeMillis());
+    
     /**
      * Read a file from url
-     * @param url
-     * @return 
+     * @param url URL to read from
+     * @return An array of strings that are each line in the file
      */
     protected static String[] readFile(String url) 
     {
@@ -46,13 +49,12 @@ public class Util {
     
     /**
      * Write a string to a file from url
-     * @param data
-     * @param url
-     * @return 
+     * @param data String input data
+     * @param url URL to write to
+     * @return true upon a successful write, false otherwise
      */
     protected static boolean writeFile(String data, String url) 
     {
-        
         try {
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(url), StandardCharsets.UTF_8);
             writer.write(data);
@@ -72,13 +74,14 @@ public class Util {
     /**
      * Write a preamble, header and data to a file from url
      * Data will be written on separate lines
-     * @param data
-     * @param url
-     * @return 
+     * @param preamble Data at the start of the file
+     * @param header In between the preamble and the data
+     * @param data After the header
+     * @param url URL to write to
+     * @return true upon a successful write, false otherwise
      */
     protected static boolean writeFile(String[] preamble, String header, String data[], String url) 
     {
-        
         try {
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(url), StandardCharsets.UTF_8);
             for (String line : preamble) {
@@ -104,32 +107,16 @@ public class Util {
     
     
     /**
-     * Write a header and data to a file from url
+     * Write a preamble, header and data to a file from url
      * Data will be written on separate lines
-     * @param data
-     * @param url
-     * @return 
+     * @param header In between the preamble and the data
+     * @param data After the header
+     * @param url URL to write to
+     * @return true upon a successful write, false otherwise
      */
     protected static boolean writeFile(String header, String data[], String url) 
     {
-        
-        try {
-            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(url), StandardCharsets.UTF_8);
-            writer.write(header);
-            for (String line : data) {
-                writer.write(line);
-                writer.write("\n");
-            }
-            writer.close();
-            
-        } catch (FileNotFoundException ex) { 
-            ex.printStackTrace(); 
-            return false;
-        } catch (IOException ex) {
-            ex.printStackTrace(); 
-            return false;
-        }
-        return true;
+        return Util.writeFile(null, header, data, url);
     }
     
     
@@ -144,4 +131,20 @@ public class Util {
         return String.format("%-" + length + "s", string);
     }
     
+    
+    /**
+     * Shuffles a list
+     * @param <E> type of the object in the list
+     * @param list the input list to shuffle
+     * @return a shuffled list
+     */
+    public static <E> List<E> shuffle(List<E> list) 
+    {
+        List<E> shuffled = new ArrayList<>();
+        
+        for (E el : list)
+            shuffled.add((shuffled.size() == 0) ? 0 : RNG.nextInt(shuffled.size() + 1), el);
+        return shuffled;
+        
+    }
 }

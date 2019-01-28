@@ -9,13 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
- * @author CalvinLaptop
+ * Represents a single entry in the dictionary
+ * @author Calvin Cramer
  */
-/**
-* Represents a single entry in the dictionary
-*/
-public  class Entry 
+public class Entry 
     implements Comparable {
 
     String english;
@@ -23,7 +20,12 @@ public  class Entry
     String characters;
     Map<String, Boolean> flags;
 
-
+    /**
+     * Creates an entry with an English, pinyin, and Chinese character entries
+     * @param english English entry
+     * @param pinyin pinyin entry
+     * @param characters Chinese character entry
+     */
     public Entry(String english, String pinyin, String characters) 
     {
         this.english = english;
@@ -32,7 +34,11 @@ public  class Entry
         this.flags = new HashMap<>();
     }
 
-    //for deep copy
+    
+    /**
+     * Creates a deep copy of an entry
+     * @param other the entry to deep copy
+     */
     public Entry(Entry other) 
     {
         this.english = other.english;
@@ -44,11 +50,21 @@ public  class Entry
     }
 
 
-    public void addFlag(String key, boolean value) 
+    /**
+     * Adds a flag to the entry table
+     * @param key key to use
+     * @param value value to set
+     */
+    public void setFlag(String key, boolean value) 
     {
         this.flags.put(key, value);
     }
 
+    
+    /**
+     * Returns a string representation of this entry
+     * @return a string representation of this entry
+     */
     @Override
     public String toString() 
     {
@@ -79,6 +95,11 @@ public  class Entry
         return s.trim() + "]";
     }
 
+    
+    /**
+     * Returns a compact string representation of this entry
+     * @return a compact string representation of this entry
+     */
     public String toStringCompact() 
     {
         String s = "[" + english + " - " + pinyin + " - " + characters;
@@ -103,6 +124,11 @@ public  class Entry
         return s.trim() + "]";
     }
 
+    
+    /**
+     * Creates a string representation of this entry that should be saved to a file
+     * @return a string representation of this entry that should be saved to a file
+     */
     public String toFileEntryString() 
     {
         String s = this.english + "#" + this.pinyin + "#" + this.characters;
@@ -121,6 +147,13 @@ public  class Entry
         return s;
     }
 
+    
+    /**
+     * Compares this entry to the other entry, by English first, then pinyin,
+     * then by Chinese characters, ignoring the case.
+     * @param o the other entry to compare this against
+     * @return standard compareTo() results
+     */
     @Override
     public int compareTo(Object o) 
     {
