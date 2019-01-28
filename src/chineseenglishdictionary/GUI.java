@@ -120,4 +120,9 @@ public class GUI extends JFrame {
     public void paint(Graphics g) {
         
     }
+    
+    
+    public static void main(String[] args) {
+        new GUI().setVisible(true);
+    }
 }
