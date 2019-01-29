@@ -1,7 +1,7 @@
 package chineseenglishdictionary;
 
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -12,14 +12,40 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 
 /**
  * Takes information from database an displays it
+ * TODO: Chinese character, English, pinyin, column for each flag for table
+ * TODO: Press column header, which sorts by that column
  * @author Calvin Cramer
  */
 public class GUI extends JFrame {
     
     private Database db;
+    
+    private static final String[][] DEFAULT_TABLE_DATA = {
+        {"hello", "nǐ hǎo", "你很"},
+        {"goodbye", "zài jiàn", "再见"},
+        {"good", "hǎo", "好"},
+        {"no", "bù", "不"},
+        {"1", "2", "3"},    
+        {"4", "5", "6"},
+        {"2", "8", "9"},
+        {"6", "7", "5"},
+        {"3", "3", "3"},
+        {"7", "7", "1"},
+        {"3", "9", "2"},
+        {"8", "6", "5"},
+        {"3", "5", "6"},
+        {"5", "6", "7"},
+        {"7", "7", "8"},
+        {"9", "8", "9"},
+        {"3", "9", "5"},
+    };
+    private static final String[] DEFAULT_COLUMN_NAMES = {"English", "Pinyin", "Chinese Characters"};
     
     private JMenuBar menuBar;
         private JMenu fileMenu;
@@ -30,11 +56,18 @@ public class GUI extends JFrame {
             private JMenuItem saveAsItem;
         private JMenu editMenu;
             //
+        private JMenu viewMenu;
+            private JMenuItem sortByEnglishItem;
+            private JMenuItem sortByPinyinItem;
+            private JMenuItem sortByChineseItem;
         private JMenu printMenu;
             private JMenuItem printSelectorDialogItem;
             private JMenuItem printSelectionItem;
             private JMenuItem printAllItem;
         private JMenu selectMenu;
+            private JMenuItem selectAllItem;
+            private JMenuItem selectNoneItem;
+            private JMenuItem selectOppositeItem;
             //
         
         private JScrollPane tableScrollPane;
@@ -68,21 +101,16 @@ public class GUI extends JFrame {
      */
     private void initGUI() 
     {
-        //make menubar, table
-        //save feature, 
-        //open feature
-        //open from file or URL
-        //print function
-            //print selection
-            //print all
-        //select by function
-        //columns of table:
-            //chinese character, english, pinyin, column for each flag
+        UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+        if (defaults.get("Table.alternateRowColor") == null)
+            defaults.put("Table.alternateRowColor", new Color(240, 240, 240));
         
+        // This
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
         this.setTitle("Dictionary");
             
+        // Menu bar
         menuBar = new JMenuBar();
         
         fileMenu = new JMenu("File");
@@ -104,7 +132,13 @@ public class GUI extends JFrame {
             
         editMenu = new JMenu("Edit");
         editMenu.setMnemonic(KeyEvent.VK_E);
-        
+            //
+            
+        viewMenu = new JMenu("View");
+            sortByEnglishItem = new JMenuItem("Sort by English");
+            sortByPinyinItem = new JMenuItem("Sort by Pinyin");
+            sortByChineseItem = new JMenuItem("Sort by Chinese characters");
+            
         printMenu = new JMenu("Print");
         printMenu.setMnemonic(KeyEvent.VK_P);
         
@@ -114,13 +148,19 @@ public class GUI extends JFrame {
         
         selectMenu = new JMenu("Select");
         //selectMenu.setMnemonic(KeyEvent.VK_S);
+            selectAllItem = new JMenuItem("Select all");
+            selectNoneItem = new JMenuItem("Select none");
+            selectOppositeItem = new JMenuItem("Select inverse");
         
-        
-        tableScrollPane = new JScrollPane();
-        
-        table = new JTable(10,4);   // Number of rows, number of columns
+        // Content pane
+        //table = new JTable(10,4);   // Number of rows, number of columns
+        table = new JTable(DEFAULT_TABLE_DATA, DEFAULT_COLUMN_NAMES);
         table.setFillsViewportHeight(true);
+        table.setFont(table.getFont().deriveFont(24f));
+        table.setRowHeight(30);
         
+        tableScrollPane = new JScrollPane(table);
+        tableScrollPane.setBorder(new LineBorder(Color.RED, 4));
         
         // Add everything to parent container
         // Menubar
@@ -132,17 +172,24 @@ public class GUI extends JFrame {
             fileMenu.add(saveAsItem);
         menuBar.add(editMenu);
             //
+        menuBar.add(viewMenu);
+            viewMenu.add(sortByEnglishItem);
+            viewMenu.add(sortByPinyinItem);
+            viewMenu.add(sortByChineseItem);
         menuBar.add(printMenu);
             printMenu.add(printSelectorDialogItem);
             printMenu.add(printSelectionItem);
             printMenu.add(printAllItem);
         menuBar.add(selectMenu);
-            //
+            selectMenu.add(selectAllItem);
+            selectMenu.add(selectNoneItem);
+            selectMenu.add(selectOppositeItem);
         this.setJMenuBar(menuBar);
         
         // Content pane
-        tableScrollPane.add(table);
+        //tableScrollPane.add(table);
         this.getContentPane().add(tableScrollPane);
+        //this.getContentPane().add(this.table);
         
         // Set preferred dimensions
         //this.menuBar.setPreferredSize(new Dimension(1000,30));
