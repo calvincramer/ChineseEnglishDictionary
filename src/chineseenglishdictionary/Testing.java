@@ -1,11 +1,19 @@
 package chineseenglishdictionary;
 
-import chineseenglishdictionary.Main.Entry;
 import java.nio.charset.Charset;
 
+/**
+ * Testing class
+ * @author Calvin Cramer
+ */
 public class Testing {
 
-    public static void main(String[] args) {
+    /**
+     * Main testing start point
+     * @param args unused
+     */
+    public static void main(String[] args) 
+    {
         Charset utf8 = Charset.forName("UTF-8");
         Charset utf16 = Charset.forName("UTF-16");
         
@@ -51,6 +59,5 @@ public class Testing {
         System.out.println("e1: " + e1);
         System.out.println("e1 copy: " + e1copy);
         */
-        
     }
 }

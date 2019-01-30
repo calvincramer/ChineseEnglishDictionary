@@ -1,13 +1,7 @@
 package chineseenglishdictionary;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,7 +26,7 @@ public class Main {
     private static final Scanner in = new Scanner(new InputStreamReader(System.in, utf8));
     
     private static final String middleLine = "#######################################\n";
-    private static final String defau1t = "S#skip\n" 
+    protected static final String defau1t = "S#skip\n" 
                                         + middleLine
                                         + "hello#nǐ hǎo#你很#\n"
                                         + "goodbye#zài jiàn#再见#XO\n"
@@ -50,12 +44,18 @@ public class Main {
                                         + "(0,9,Q) - quits program";
     
     //flags are false if not present, true if present
-    private static final Map<Character, String> flagHash = new HashMap<Character, String>();
-    private static final Map<String, Character> reverseFlagHash = new HashMap<>();
+    protected static final Map<Character, String> flagHash = new HashMap<Character, String>();
+    protected static final Map<String, Character> reverseFlagHash = new HashMap<>();
     
-    public static void main(String[] args) {
+    
+    /**
+     * Main control loop
+     * @param args unused
+     */
+    public static void main(String[] args) 
+    {
         //read data from file
-        String[] fileData = readFile(fileName);
+        String[] fileData = Util.readFile(fileName);
         
         //look for split between flags and dictionary
         int split = 0;
@@ -154,113 +154,22 @@ public class Main {
     
     
     /**
-     * Lets user print what they want
+     * Creates new print screen dialog
      */
-    private static void printStart() {
+    private static void printStart() 
+    {
         System.out.println("Opening print dialog...");
         PrintOptionsFrame pof = new PrintOptionsFrame(entries, flagHash);
-        
-        /*
-        try {
-            PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
-            PrintService printService = PrintServiceLookup.lookupDefaultPrintService();
-            PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-                attributes.add(OrientationRequested.PORTRAIT);
-                attributes.add(new MediaPrintableArea(0.5f, 0.5f, 7.5f, 10f, MediaPrintableArea.INCH));
-                attributes.add(new Copies(1));
-                attributes.add(MediaSizeName.NA_LETTER);
-            
-            System.out.println("Selected printer: " + printService.getName());
-
-            PrinterJob job = PrinterJob.getPrinterJob();
-            PageFormat format = job.defaultPage();          //setting able to print on whole paper
-            Paper paper = format.getPaper();                //copied, not reference
-            double inset = 36;                              //72nths of an inch
-            paper.setImageableArea(inset, inset, paper.getWidth() - inset * 2, paper.getHeight() - inset * 2);
-            format.setPaper(paper);
-            job.setPrintService(printService);
-            job.setPrintable(new EntryPagePrinter(""));
-            System.out.println("Printing!");
-            
-            //new attributes sent 
-               //job.print(attrib);    //the holy print line      
-            
-            //printing stuff for testing
-            
-            System.out.println("Default page format: " + format.toString());
-            System.out.println("\tHeight: " + format.getHeight() + " (" + (format.getHeight() / 72) + ")"+ " width: " + format.getWidth() + " (" + (format.getWidth()/ 72) + ")"
-                    + " imag height: " + format.getImageableHeight() + " (" + (format.getImageableHeight()/ 72) + ")" + " imag width: " + format.getImageableWidth() + " (" + (format.getImageableWidth()/ 72) + ")"
-                    + " imag x: " + format.getImageableX() + " (" + (format.getImageableX()/ 72) + ")" + " imag y: " + format.getImageableY() + " (" + (format.getImageableY()/ 72) + ")");
-            
-            System.out.println("PrintRequestAttributeSet: " + attributes.toString());
-            for (Attribute attr : attributes.toArray()) {
-                System.out.println("\t" + attr.toString() + " -> " + attr.getName() + "    " + attr.getCategory());
-            }   
-            
-            
-        } catch (PrinterException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-        }
-        */
-        
+        pof.showOnScreen();
     }
     
     
     /**
-     * Testing
+     * TODO: ADD DOCUMENTATION
+     * @param index 
      */
-    /*
-    private static void printTesting() {
-        try {
-            System.out.println("Select the printer via dialog box...");
-            PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
-            PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
-            PrintRequestAttributeSet attrib = new HashPrintRequestAttributeSet();
-            PrintService selectedPrintService = ServiceUI.printDialog(null, 150, 150, printServices, defaultPrintService, null, attrib);
-            if(selectedPrintService == null) return;
-            
-            //trying to set border
-            attrib.add(new MediaPrintableArea(0.5f, 0.5f, 7.5f, 10f, MediaPrintableArea.INCH));
-            
-            System.out.println("Selected printer: " + selectedPrintService.getName());
-
-            PrinterJob job = PrinterJob.getPrinterJob();
-            PageFormat format = job.defaultPage();          //setting able to print on whole paper
-            Paper paper = format.getPaper();                //copied, not reference
-            double inset = 36;                              //72nths of an inch
-            paper.setImageableArea(inset, inset, paper.getWidth() - inset * 2, paper.getHeight() - inset * 2);
-            format.setPaper(paper);
-            job.setPrintService(selectedPrintService);
-            job.setPrintable(new EntryPagePrinter(""));
-            System.out.println("Printing!");
-            
-            //new attributes sent 
-            //job.print(attrib);   //the holy print line      
-            
-            //printing stuff for testing
-            
-            System.out.println("Default page format: " + format.toString());
-            System.out.println("\tHeight: " + format.getHeight() + " (" + (format.getHeight() / 72) + ")"+ " width: " + format.getWidth() + " (" + (format.getWidth()/ 72) + ")"
-                    + " imag height: " + format.getImageableHeight() + " (" + (format.getImageableHeight()/ 72) + ")" + " imag width: " + format.getImageableWidth() + " (" + (format.getImageableWidth()/ 72) + ")"
-                    + " imag x: " + format.getImageableX() + " (" + (format.getImageableX()/ 72) + ")" + " imag y: " + format.getImageableY() + " (" + (format.getImageableY()/ 72) + ")");
-            
-            System.out.println("PrintRequestAttributeSet: " + attrib.toString());
-            for (Attribute attr : attrib.toArray()) {
-                System.out.println("\t" + attr.toString() + " -> " + attr.getName() + "    " + attr.getCategory());
-            }   
-            
-            
-        } catch (PrinterException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-        }
-        
-    }
-    */
-    
-    
-    private static void changeEntry(int index) {
+    private static void changeEntry(int index) 
+    {
         //actually change entry 
         System.out.println("Change " + entries.get(index).toStringCompact() + " by which field? (0 to exit)");
         System.out.println("(1) - English");
@@ -313,7 +222,11 @@ public class Main {
     }
     
     
-    private static void changeEntryStart() {
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
+    private static void changeEntryStart() 
+    {
         System.out.println("Select entry to change by? (0 to exit)");
         System.out.println("(1) - id (index)");
         System.out.println("(2) - english");
@@ -372,7 +285,7 @@ public class Main {
             System.out.println("Multiple entries match, select index of desired one: ");
             
             for (int ind : matchingIndices)
-                System.out.println(strWidth(""+ind, 2) + ": " + entries.get(ind));
+                System.out.println(Util.strWidth(""+ind, 2) + ": " + entries.get(ind));
             System.out.print("Change: " + userPrompt);
             String inp = in.nextLine().trim();
             try {
@@ -396,9 +309,10 @@ public class Main {
     
     /**
      * Gets and returns a 'Y' or 'N' from the user
-     * @return 
+     * @return a character 'Y' or 'N'
      */
-    private static char getYesNo() {
+    private static char getYesNo() 
+    {
         char c = '\0';
         do {
             c = Character.toUpperCase(in.nextLine().trim().charAt(0));
@@ -413,7 +327,8 @@ public class Main {
      * Go over again
      * @param entries 
      */
-    private static void deleteEntry() {
+    private static void deleteEntry() 
+    {
         System.out.println("DELETE BY? (0 to exit):");
         System.out.println("(1) - id (index)");
         System.out.println("(2) - ENGLISH");
@@ -459,7 +374,7 @@ public class Main {
             else if (matchedIndices.size() > 0) {
                 System.out.println("FOUND MULTIPLE MATCHES: SELECT THE INDEX TO DELETE OR ANYTHING ELSE TO QUIT");
                 for (int ind : matchedIndices)
-                    System.out.println(strWidth(""+ind, 2) + ": " + entries.get(ind));
+                    System.out.println(Util.strWidth(""+ind, 2) + ": " + entries.get(ind));
                 System.out.print("DELETE: " + userPrompt);
                 inp = in.nextLine().trim();
                 try {
@@ -495,9 +410,10 @@ public class Main {
     
     /**
      * Should be the only method that deletes an entry from the dictionary
-     * @param index 
+     * @param index index to delete
      */
-    public static void delete(int index) {
+    public static void delete(int index) 
+    {
         if (index < 0 || index >= entries.size()) {
             System.out.println("ERROR TRYING TO DELETE OUT OF BOUNDS OF DICTIONARY");
             return;
@@ -507,6 +423,7 @@ public class Main {
         
     }
     
+    
     /**
      * Gets a single number from the user, low high inclusive
      * @param low
@@ -514,7 +431,8 @@ public class Main {
      * @param prefixMessage
      * @return 
      */
-    private static int getNumberFromUser(int low, int high, String prefixMessage) {
+    private static int getNumberFromUser(int low, int high, String prefixMessage) 
+    {
         int choice = Integer.MIN_VALUE;
         do {
             System.out.print(prefixMessage + userPrompt);
@@ -527,7 +445,13 @@ public class Main {
     }
     
     
-    private static List<Entry> selectByFlags(boolean allowMultipleSelection) {
+    /**
+     * TODO: ADD DOCUMENTATION
+     * @param allowMultipleSelection
+     * @return 
+     */
+    private static List<Entry> selectByFlags(boolean allowMultipleSelection) 
+    {
         if (allowMultipleSelection) System.out.println("MULTIPLE ENTRY SELECTION IS NOT FULLY SUPPORTED");
         System.out.print("Select by flags by typing the character for each flag: ");
         if (allowMultipleSelection) System.out.println("(can select more than one)");
@@ -572,11 +496,13 @@ public class Main {
         return selectedEntries;
     }
     
+    
     /**
      * Prints stuff from the dictionary according to how user wants
      * @param entries 
      */
-    private static void printToScreen() {
+    private static void printToScreen() 
+    {
         System.out.println("How would you like to print? (0 to exit):");
         System.out.println("(1) - entire dictionary");
         System.out.println("(2) - most recently added entry");
@@ -610,7 +536,7 @@ public class Main {
                 highIndex = temp;
             }
             for (int i = lowIndex; i <= highIndex && i <= entries.size(); i++)
-                System.out.println(strWidth(""+i, 2) + ": " + entries.get(i));
+                System.out.println(Util.strWidth(""+i, 2) + ": " + entries.get(i));
         }
         else if (choice == 5) {     //english first character range
             System.out.print("low character: " + userPrompt);
@@ -628,7 +554,7 @@ public class Main {
                 int firstChar = Character.toUpperCase(entries.get(i).english.charAt(0));
                 if (firstChar < low)     continue;
                 if (firstChar > high)    break;
-                System.out.println(strWidth(""+i, 2) + ": " + entries.get(i));
+                System.out.println(Util.strWidth(""+i, 2) + ": " + entries.get(i));
             }
         }
         else if (choice == 6) {     //english first character range
@@ -646,7 +572,7 @@ public class Main {
             for (int i = 0; i < entries.size(); i++) {
                 if (entries.get(i).pinyin.charAt(0) < low)     continue;
                 if (entries.get(i).pinyin.charAt(0) > high)    break;
-                System.out.println(strWidth(""+i, 2) + ": " + entries.get(i));
+                System.out.println(Util.strWidth(""+i, 2) + ": " + entries.get(i));
             }
         }
         else if (choice == 7) { //select by flags
@@ -661,10 +587,11 @@ public class Main {
     
     /**
      * Does it in dumb O(n)
-     * @param entries
+     * TODO: better insert algorithm
      * @param toAdd 
      */
-    private static int insertInOrder(Entry toAdd) {
+    private static int insertInOrder(Entry toAdd) 
+    {
         int index = 0;
         for (int i = 0; i < entries.size(); i++) {
             if (toAdd.compareTo(entries.get(i)) <= 0)
@@ -676,24 +603,29 @@ public class Main {
     }
     
     
-    private static void findEntryStart() {
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
+    private static void findEntryStart() 
+    {
         List<Integer> result = findEntry();
         if (result == null) {}
         else if (result.size() == 0)    System.out.println("could not find any matching entries");
         else {
             System.out.println("Found " + (result.size() > 1 ? "these " + result.size() + " entries:" : "this entry:"));
             for (int n : result)
-                System.out.println(strWidth(""+n, 2) + ": " + entries.get(n));
+                System.out.println(Util.strWidth(""+n, 2) + ": " + entries.get(n));
         }
     }
+    
     
     /**
      * Accepts user input to search through the dictionary
      * Will return a list of matching indices, null if the user quits early, and a list of zero size if nothing matches
-     * @param entries
-     * @return 
+     * @return a list of matching indices
      */
-    private static List<Integer> findEntry() {
+    private static List<Integer> findEntry() 
+    {
         //find by exact english, exact pinyin, exact chinese, or starting with english, pinyin, chinese
         System.out.println("How you would like to find? (0 to exit):");
         System.out.println("(1) - english: search term can come up anywhere");
@@ -750,7 +682,12 @@ public class Main {
     }
     
     
-    private static String getFlagsFromUser() {
+    /**
+     * TODO: ADD DOCUMENTATION
+     * @return 
+     */
+    private static String getFlagsFromUser() 
+    {
         String inp = in.nextLine().trim().toUpperCase();
         String flags = "";
         for (char c : inp.toCharArray()) {
@@ -760,7 +697,13 @@ public class Main {
         return flags;
     }
     
-    private static String getFlagString() {
+    
+    /**
+     * TODO: ADD DOCUMENTATION
+     * @return 
+     */
+    private static String getFlagString() 
+    {
         String s = "";
         for (char c : flagHash.keySet()) {
             s += "[" + c + " = " + flagHash.get(c) + "]";
@@ -774,7 +717,8 @@ public class Main {
      * Should be the only method that adds an entry to the dictionary
      * @param e 
      */
-    private static void add(Entry e) {
+    private static void add(Entry e) 
+    {
         int index = insertInOrder(e);       //add in order
         mostRecentlyAddedEntry = e;
         mostRecentlyAddedIndex = index;
@@ -783,7 +727,11 @@ public class Main {
     }
     
     
-    private static void addMostRecentEntryBack() {
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
+    private static void addMostRecentEntryBack() 
+    {
         if (mostRecentlyDeletedEntry == null) {
             System.out.println("There is not recently deleted entry!");
         }
@@ -801,7 +749,8 @@ public class Main {
     /**
      * Guides the user adding a new entry
      */
-    private static void addEntryStart() {
+    private static void addEntryStart() 
+    {
         System.out.println("Add entry by: (0 to exit)");
         System.out.println("(1) - English, pinyin, Chinese characters without flags");
         System.out.println("(2) - same as above with flags");
@@ -846,7 +795,8 @@ public class Main {
      * Gets the information for a new entry from the user
      * @return 
      */
-    private static Entry inputEntry() {
+    private static Entry inputEntry() 
+    {
         System.out.print("ADDING ENTRY:\nEnglish: ");
         String eng = in.nextLine().trim();
         System.out.print("Pin-yin: ");
@@ -867,7 +817,8 @@ public class Main {
      * @param fileName
      * @param print 
      */
-    private static void saveEntriesToFile(String fileName, boolean print) {
+    private static void saveEntriesToFile(String fileName, boolean print) 
+    {
         //convert flags back to file string form
         String[] flagsData = new String[flagHash.size()];
         int index = 0;
@@ -885,7 +836,7 @@ public class Main {
         //write back header and things from above
         if (print)  System.out.print("Saving file... ");
         long start = System.currentTimeMillis();
-        writeFile(flagsData, middleLine, fileOutputData, fileName);
+        Util.writeFile(flagsData, middleLine, fileOutputData, fileName);
         long end = System.currentTimeMillis();
         if (print)  System.out.println("done (" + (end - start) + " ms)");
     }
@@ -895,254 +846,25 @@ public class Main {
      * Print the list of entries to standard out
      * @param entries 
      */
-    private static void printEntries(List<Entry> entries) {
+    private static void printEntries(List<Entry> entries) 
+    {
         for (int i = 0; i < entries.size(); i++) {
-            System.out.println(strWidth(""+i, 2) + ": " + entries.get(i));
+            System.out.println(Util.strWidth(""+i, 2) + ": " + entries.get(i));
         }
     }
     
     
-    private static void printFlags() {
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
+    private static void printFlags() 
+    {
         //print alphabetically
         Map<Character, String> tempFlags = new TreeMap<Character, String>(flagHash);
         //Collections.sort(flagsTemp);
         
         for (char c : tempFlags.keySet())
             System.out.println(c + " -> " + flagHash.get(c));
-    }
-    
-    
-    /**
-     * Read a file from url
-     * @param url
-     * @return 
-     */
-    private static String[] readFile(String url) {
-        Scanner reader;
-        List<String> lines = new ArrayList<>();
-
-        try {
-            reader = new Scanner(new File(url));
-            while (reader.hasNextLine())
-                lines.add(reader.nextLine());
-        } 
-        catch (FileNotFoundException e) { 
-            writeFile(defau1t, url);
-            return readFile(url);
-        }
-        
-        return lines.toArray(new String[lines.size()]);
-    }
-    
-    
-    /**
-     * Write a string to a file from url
-     * @param data
-     * @param url
-     * @return 
-     */
-    private static boolean writeFile(String data, String url) {
-        
-        try {
-            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(url), StandardCharsets.UTF_8);
-            writer.write(data);
-            writer.close();
-            
-        } catch (FileNotFoundException ex) { 
-            ex.printStackTrace(); 
-            return false;
-        } catch (IOException ex) {
-            ex.printStackTrace(); 
-            return false;
-        }
-        return true;
-    }
-    
-    
-    /**
-     * Write a header and data to a file from url
-     * Data will be written on separate lines
-     * @param data
-     * @param url
-     * @return 
-     */
-    private static boolean writeFile(String header, String data[], String url) {
-        
-        try {
-            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(url), StandardCharsets.UTF_8);
-            writer.write(header);
-            for (String line : data) {
-                writer.write(line);
-                writer.write("\n");
-            }
-            writer.close();
-            
-        } catch (FileNotFoundException ex) { 
-            ex.printStackTrace(); 
-            return false;
-        } catch (IOException ex) {
-            ex.printStackTrace(); 
-            return false;
-        }
-        return true;
-    }
-    
-    
-    /**
-     * Write a preamble, header and data to a file from url
-     * Data will be written on separate lines
-     * @param data
-     * @param url
-     * @return 
-     */
-    private static boolean writeFile(String[] preamble, String header, String data[], String url) {
-        
-        try {
-            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(url), StandardCharsets.UTF_8);
-            for (String line : preamble) {
-                writer.write(line);
-                writer.write("\n");
-            }
-            writer.write(header);
-            for (String line : data) {
-                writer.write(line);
-                writer.write("\n");
-            }
-            writer.close();
-            
-        } catch (FileNotFoundException ex) { 
-            ex.printStackTrace(); 
-            return false;
-        } catch (IOException ex) {
-            ex.printStackTrace(); 
-            return false;
-        }
-        return true;
-    }
-    
-    
-    private static String strWidth(String string, int length) {
-        return String.format("%-" + length + "s", string);
-    }
-    
-    
-    /**
-     * Represents a single entry in the dictionary
-     */
-    public static class Entry 
-        implements Comparable {
-        
-        String english;
-        String pinyin;
-        String characters;
-        Map<String, Boolean> flags;
-        
-
-        public Entry(String english, String pinyin, String characters) {
-            this.english = english;
-            this.pinyin = pinyin;
-            this.characters = characters;
-            this.flags = new HashMap<>();
-        }
-        
-        //for deep copy
-        public Entry(Entry other) {
-            this.english = other.english;
-            this.pinyin = other.pinyin;
-            this.characters = other.characters;
-            this.flags = new HashMap<>();
-            for (String key : other.flags.keySet())
-                this.flags.put(key, other.flags.get(key));
-        }
-
-        
-        public void addFlag(String key, boolean value) {
-            this.flags.put(key, value);
-        }
-        
-        @Override
-        public String toString() {
-            int lengthEng = (((english.length()     - 1) / 8) + 1) * 8;
-            int lengthPin = (((pinyin.length()      - 1) / 8) + 1) * 8;
-            int lengthCh  = (((characters.length()  - 1) / 4) + 1) * 4;
-            String s = "[" + strWidth(english, lengthEng) 
-                    + " - " + strWidth(pinyin, lengthPin)
-                    + " - " + strWidth(characters, lengthCh);
-            
-            int setFields = 0;
-            for (String key : flags.keySet())
-                if (flags.get(key) == true)
-                    setFields++;
-            
-            if (setFields > 0)
-                s += " || ";
-            
-            int n = 0;
-            for (String key : flags.keySet()) {
-                if (flags.get(key) == true) {
-                    s += key;
-                    if (n < setFields)
-                        s += " ";
-                }
-            }
-            
-            return s.trim() + "]";
-        }
-        
-        public String toStringCompact() {
-            String s = "[" + english + " - " + pinyin + " - " + characters;
-            
-            int setFields = 0;
-            for (String key : flags.keySet())
-                if (flags.get(key) == true)
-                    setFields++;
-            
-            if (setFields > 0)
-                s += " || ";
-            
-            int n = 0;
-            for (String key : flags.keySet()) {
-                if (flags.get(key) == true) {
-                    s += key;
-                    if (n < setFields)
-                        s += " ";
-                }
-            }
-            
-            return s.trim() + "]";
-        }
-        
-        public String toFileEntryString() {
-            String s = this.english + "#" + this.pinyin + "#" + this.characters;
-            boolean atLeastOneTrueFlag = false;
-            for (String flag : this.flags.keySet()) {
-                if (flags.get(flag) == true) {
-                    atLeastOneTrueFlag = true;
-                    break;
-                }
-            }
-            if (atLeastOneTrueFlag) s += "#";
-            
-            for (String flag : this.flags.keySet())
-                if (flags.get(flag) == true)
-                    s += reverseFlagHash.get(flag);
-            return s;
-        }
-
-        @Override
-        public int compareTo(Object o) {
-            if (o instanceof Entry) {
-                Entry other = (Entry) o;
-                int res = this.english.compareToIgnoreCase(other.english);
-                if (res != 0)   return res;
-                res = this.pinyin.compareToIgnoreCase(other.pinyin);
-                if (res != 0)   return res;
-                res = this.characters.compareToIgnoreCase(other.characters);
-                return res;
-            }
-            return -1;
-        }
-        
     }
 }
 //TO DO:

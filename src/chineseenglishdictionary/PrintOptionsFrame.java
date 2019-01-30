@@ -1,6 +1,6 @@
 package chineseenglishdictionary;
 
-import chineseenglishdictionary.Main.Entry;
+import chineseenglishdictionary.Entry;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -51,8 +51,7 @@ import javax.swing.border.TitledBorder;
 
 public class PrintOptionsFrame 
     extends JFrame {
-    
-
+   
     private JPanel topPanel;
         private JPanel printerPanel;
             private JButton selectDefaultPrinterButton;
@@ -103,7 +102,13 @@ public class PrintOptionsFrame
     private static Random rng = new Random(System.currentTimeMillis());
 
     
-    public PrintOptionsFrame(List<Entry> entries, Map<Character, String> flags) {
+    /**
+     * Creates a printing dialog window
+     * @param entries Entries to possibly print
+     * @param flags TODO: ADD DOCUMENTATION
+     */
+    public PrintOptionsFrame(List<Entry> entries, Map<Character, String> flags) 
+    {
         super("Printing Options");
         this.entries = entries;
         this.selectedEntries = new boolean[entries.size()];
@@ -111,10 +116,6 @@ public class PrintOptionsFrame
         init();
         this.selectButtonChanged();
         this.limitEntriesButtonChanged();
-        
-        this.setAlwaysOnTop(true);
-        this.setVisible(true);
-        this.toFront();
         
         //map
         this.typeMap = new HashMap<>();
@@ -137,7 +138,22 @@ public class PrintOptionsFrame
     }
     
     
-    private void init() {
+    /**
+     * Shows the dialog on the screen
+     */
+    protected void showOnScreen() 
+    {
+        this.setAlwaysOnTop(true);
+        this.setVisible(true);
+        this.toFront();
+    }
+    
+    
+    /**
+     * Creates the internals of the printing dialog frame
+     */
+    private void init() 
+    {
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setTitle("Printing Options");
         this.setResizable(false);
@@ -363,11 +379,21 @@ public class PrintOptionsFrame
         this.pack();
     }
     
-    private void setToDefaultPrinterButtonPressed() {
+    
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
+    private void setToDefaultPrinterButtonPressed() 
+    {
         this.printerComboBox.setSelectedItem(this.defaultPrintService.getName());
     }
     
-    private void typeButtonChanged() {
+    
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
+    private void typeButtonChanged() 
+    {
         if (this.showAllButton.isSelected())
             this.printAnswersCheckBox.setSelected(false);
         else
@@ -390,7 +416,12 @@ public class PrintOptionsFrame
         //System.out.println("currently selected type: " + this.currentlySelectedType.getText());
     }
     
-    private void selectButtonChanged() {
+    
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
+    private void selectButtonChanged() 
+    {
         filterChanged();
         if (this.selectByFlagsButton.isSelected()) {
             this.includeFlagsButton.setEnabled(true);
@@ -406,7 +437,12 @@ public class PrintOptionsFrame
         }
     }
     
-    private void limitEntriesButtonChanged() {
+    
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
+    private void limitEntriesButtonChanged() 
+    {
         if (this.limitEntries.isSelected()) {
             this.limitEntriesTextField.setText("80");
         }
@@ -415,7 +451,12 @@ public class PrintOptionsFrame
         }
     }
     
-    private void filterChanged() {
+    
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
+    private void filterChanged() 
+    {
         if (this.selectRandomlyButton.isSelected()) {
             for (int i = 0; i < this.selectedEntries.length; i++)
                 selectedEntries[i] = true;
@@ -479,7 +520,12 @@ public class PrintOptionsFrame
         }
     }
     
-    private void printPressed() {
+    
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
+    private void printPressed() 
+    {
         this.setVisible(false);
         
         //create list of entries to be printed
@@ -489,7 +535,7 @@ public class PrintOptionsFrame
                 toPrint.add(entries.get(i));
         }
         if (this.randomizeOrderCheckBox.isSelected()) {
-            toPrint = shuffle(toPrint);
+            toPrint = Util.shuffle(toPrint);
         }
         
         try {
@@ -552,21 +598,23 @@ public class PrintOptionsFrame
         this.exitButtonPressed();
     }
 
-    private void exitButtonPressed() {
+    
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
+    private void exitButtonPressed() 
+    {
         this.setVisible(false);
         this.dispose();
     }
     
-    public static <E> List<E> shuffle(List<E> list) {
-        List<E> shuffled = new ArrayList<>();
-        
-        for (E el : list)
-            shuffled.add((shuffled.size() == 0) ? 0 : rng.nextInt(shuffled.size() + 1), el);
-        return shuffled;
-        
-    }
     
-    public static void main(String[] args) {
+    /**
+     * Testing if the shuffle function works 
+     * @param args unused
+     */
+    public static void main(String[] args) 
+    {
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
@@ -577,7 +625,7 @@ public class PrintOptionsFrame
         int max = 10000000;
         
         for (int i = 0; i < max; i++) {
-            List<Integer> shuf = PrintOptionsFrame.shuffle(list);
+            List<Integer> shuf = Util.shuffle(list);
             Integer numOccur = occur.get(shuf);
             if (numOccur == null)
                 occur.put(shuf, 1);
@@ -593,18 +641,34 @@ public class PrintOptionsFrame
         
     }
     
+    
     /**
      * Creates the image for the paper
      */
-    private class EntryPagePrinter implements Printable {
+    private class EntryPagePrinter implements Printable 
+    {
         List<Entry> entriesToPrint;
         Type type;
         
+        /**
+         * TODO: ADD DOCUMENTATION
+         * @param e
+         * @param t 
+         */
         public EntryPagePrinter(List<Entry> e, Type t) {
             this.entriesToPrint = e;
             this.type = t;
         }
         
+        
+        /**
+         * TODO: ADD DOCUMENTATION
+         * @param graphics
+         * @param pageFormat
+         * @param pageIndex
+         * @return
+         * @throws PrinterException 
+         */
         @Override
         public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
             if (pageIndex > 0)  return Printable.NO_SUCH_PAGE;
@@ -797,6 +861,12 @@ public class PrintOptionsFrame
             return Printable.PAGE_EXISTS;
         }
         
+        
+        /**
+         * TODO: ADD DOCUMENTATION
+         * @param inp
+         * @return 
+         */
         private String[] conformToType(String[] inp) {
             if (this.type == null) {
                 this.type = Type.SHOW_ALL;
@@ -841,6 +911,15 @@ public class PrintOptionsFrame
             return inp;
         }
         
+        
+        /**
+         * TODO: ADD DOCUMENTATION
+         * @param g2
+         * @param text
+         * @param x
+         * @param y
+         * @param width 
+         */
         private void drawTextIn(Graphics2D g2, String text, int x, int y, int width) {
             //maybe we could do some fancy math, maybe this is the easiest way?4
             FontMetrics m = g2.getFontMetrics();
@@ -857,11 +936,21 @@ public class PrintOptionsFrame
         }
     }
     
-    private enum EntryType {
+    
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
+    private enum EntryType 
+    {
         ENGLISH, PINYIN, CHARACTERS
     }
     
-    private enum Type {
+    
+    /**
+     * TODO: ADD DOCUMENTATION
+     */
+    private enum Type 
+    {
         HIDE_ENGLISH, HIDE_PINYIN, HIDE_CHARACTERS,
         HIDE_ENGLISH_PINYIN, HIDE_ENGLISH_CHARACTERS, HIDE_PINYIN_CHARACTERS,
         HIDE_RANDOM_ENGLISH_PINYIN, HIDE_RANDOM_ENGLISH_CHARACTERS, HIDE_RANDOM_PINYIN_CHARACTERS,
