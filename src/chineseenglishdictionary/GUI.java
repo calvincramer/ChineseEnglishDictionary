@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -20,6 +21,7 @@ import javax.swing.border.LineBorder;
  * Takes information from database an displays it
  * TODO: Chinese character, English, pinyin, column for each flag for table
  * TODO: Press column header, which sorts by that column
+ * TODO: when editing cell of table, have editing font be similar or same to normal viewing font
  * @author Calvin Cramer
  */
 public class GUI extends JFrame {
@@ -55,7 +57,10 @@ public class GUI extends JFrame {
             private JMenuItem saveItem;
             private JMenuItem saveAsItem;
         private JMenu editMenu;
-            //
+            private JMenuItem cutItem;
+            private JMenuItem copyItem;
+            private JMenuItem pasteItem;
+            private JMenuItem insertNewEntryItem;
         private JMenu viewMenu;
             private JMenuItem sortByEnglishItem;
             private JMenuItem sortByPinyinItem;
@@ -105,55 +110,38 @@ public class GUI extends JFrame {
         if (defaults.get("Table.alternateRowColor") == null)
             defaults.put("Table.alternateRowColor", new Color(240, 240, 240));
         
-        // This
+        // Window setup
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
         this.setTitle("Dictionary");
             
-        // Menu bar
+        // Instantiate Menu bar
         menuBar = new JMenuBar();
-        
         fileMenu = new JMenu("File");
-        fileMenu.setMnemonic(KeyEvent.VK_M);
-        
-            createNewItem = new JMenuItem("Create new database", KeyEvent.VK_N);
-            createNewItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-            
+            createNewItem = new JMenuItem("Create new database");
             openItem = new JMenuItem("Open local database");
-            openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-            
             openURLItem = new JMenuItem("Open database from URL");
-            //openURLItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK)); //ctrl shift O
-        
-            saveItem = new JMenuItem("Save database", KeyEvent.VK_S);
-            saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-        
+            saveItem = new JMenuItem("Save database");
             saveAsItem = new JMenuItem("Save database as");
-            
         editMenu = new JMenu("Edit");
-        editMenu.setMnemonic(KeyEvent.VK_E);
-            //
-            
+            cutItem = new JMenuItem("Cut selection");
+            copyItem = new JMenuItem("Copy selection");
+            pasteItem = new JMenuItem("Pase selection");
+            insertNewEntryItem = new JMenuItem("Insert new entry");
         viewMenu = new JMenu("View");
             sortByEnglishItem = new JMenuItem("Sort by English");
             sortByPinyinItem = new JMenuItem("Sort by Pinyin");
             sortByChineseItem = new JMenuItem("Sort by Chinese characters");
-            
         printMenu = new JMenu("Print");
-        printMenu.setMnemonic(KeyEvent.VK_P);
-        
             printSelectorDialogItem = new JMenuItem("Select in dialog then print");
             printSelectionItem = new JMenuItem("Print Selection");
             printAllItem = new JMenuItem("Print All");
-        
         selectMenu = new JMenu("Select");
-        //selectMenu.setMnemonic(KeyEvent.VK_S);
-            selectAllItem = new JMenuItem("Select all");
-            selectNoneItem = new JMenuItem("Select none");
-            selectOppositeItem = new JMenuItem("Select inverse");
+            selectAllItem = new JMenuItem("Select All");
+            selectNoneItem = new JMenuItem("Select None");
+            selectOppositeItem = new JMenuItem("Select Inverse");
         
         // Content pane
-        //table = new JTable(10,4);   // Number of rows, number of columns
         table = new JTable(DEFAULT_TABLE_DATA, DEFAULT_COLUMN_NAMES);
         table.setFillsViewportHeight(true);
         table.setFont(table.getFont().deriveFont(24f));
@@ -161,6 +149,50 @@ public class GUI extends JFrame {
         
         tableScrollPane = new JScrollPane(table);
         tableScrollPane.setBorder(new LineBorder(Color.RED, 4));
+        
+        // Add action listeners hooks
+        // File
+        createNewItem.addActionListener((ActionEvent e) -> { createNewItemAction(e); });
+        openItem.addActionListener((ActionEvent e) -> { openItemAction(e); });
+        openURLItem.addActionListener((ActionEvent e) -> { openURLItemAction(e); });
+        saveItem.addActionListener((ActionEvent e) -> { saveItemAction(e); });
+        saveAsItem.addActionListener((ActionEvent e) -> { saveAsItemAction(e); });
+        // Edit
+        cutItem.addActionListener((ActionEvent e) -> { cutItemAction(e); });
+        copyItem.addActionListener((ActionEvent e) -> { copyItemAction(e); });
+        pasteItem.addActionListener((ActionEvent e) -> { pasteItemAction(e); });
+        insertNewEntryItem.addActionListener((ActionEvent e) -> { insertNewEntryItemAction(e); });
+        // View
+        sortByEnglishItem.addActionListener((ActionEvent e) -> { sortByEnglishItemAction(e); });
+        sortByPinyinItem.addActionListener((ActionEvent e) -> { sortByPinyinItemAction(e); });
+        sortByChineseItem.addActionListener((ActionEvent e) -> { sortByChineseItemAction(e); });
+        // Print
+        printSelectorDialogItem.addActionListener((ActionEvent e) -> { printSelectorDialogItemAction(e); });
+        printSelectionItem.addActionListener((ActionEvent e) -> { printSelectionItemAction(e); });
+        printAllItem.addActionListener((ActionEvent e) -> { printAllItemAction(e); });
+        // Select
+        selectAllItem.addActionListener((ActionEvent e) -> { selectAllItemAction(e); });
+        selectNoneItem.addActionListener((ActionEvent e) -> { selectNoneItemAction(e); });
+        selectOppositeItem.addActionListener((ActionEvent e) -> { selectOppositeItem(e); });
+
+        // Set mnemonics (alt + key) and accelerators (ctrl + key)
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+            createNewItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+            createNewItem.setMnemonic(KeyEvent.VK_N);
+            openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+            openItem.setMnemonic(KeyEvent.VK_O);
+            openURLItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK));
+            openURLItem.setMnemonic(KeyEvent.VK_U);
+            //openURLItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK)); //ctrl shift O
+            saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+            saveItem.setMnemonic(KeyEvent.VK_S);
+        editMenu.setMnemonic(KeyEvent.VK_E);
+        printMenu.setMnemonic(KeyEvent.VK_P);
+        selectMenu.setMnemonic(KeyEvent.VK_S);
+            selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+            selectAllItem.setMnemonic(KeyEvent.VK_A);
+            selectNoneItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+            selectOppositeItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
         
         // Add everything to parent container
         // Menubar
@@ -171,7 +203,10 @@ public class GUI extends JFrame {
             fileMenu.add(saveItem);
             fileMenu.add(saveAsItem);
         menuBar.add(editMenu);
-            //
+            editMenu.add(cutItem);
+            editMenu.add(copyItem);
+            editMenu.add(pasteItem);
+            editMenu.add(insertNewEntryItem);
         menuBar.add(viewMenu);
             viewMenu.add(sortByEnglishItem);
             viewMenu.add(sortByPinyinItem);
@@ -213,6 +248,68 @@ public class GUI extends JFrame {
         int y = (height / 2) - (this.getHeight() / 2);
         this.setBounds(x, y, this.getWidth(), this.getHeight());
     }
+    
+    //<editor-fold defaultstate="collapsed" desc="Window action functions">
+    // File
+    private void createNewItemAction(ActionEvent e) {
+        System.err.println("createNewItemAction not implemented yet");
+    }
+    private void openItemAction(ActionEvent e) {
+        System.err.println("openItemAction not implemented yet");
+    }
+    private void openURLItemAction(ActionEvent e) {
+        System.err.println("openURLItemAction not implemented yet");
+    }
+    private void saveItemAction(ActionEvent e) {
+        System.err.println("saveItemAction not implemented yet");
+    }
+    private void saveAsItemAction(ActionEvent e) {
+        System.err.println("saveAsItemAction not implemented yet");
+    }
+    // Edit
+    private void cutItemAction(ActionEvent e) {
+        System.err.println("cutItemAction not implemented yet");
+    }
+    private void copyItemAction(ActionEvent e) {
+        System.err.println("copyItemAction not implemented yet");
+    }
+    private void pasteItemAction(ActionEvent e) {
+        System.err.println("pasteItemAction not implemented yet");
+    }
+    private void insertNewEntryItemAction(ActionEvent e) {
+        System.err.println("insertNewEntryItemAction not implemented yet");
+    }
+    // View
+    private void sortByEnglishItemAction(ActionEvent e) {
+        System.err.println("sortByEnglishItemAction not implemented yet");
+    }
+    private void sortByPinyinItemAction(ActionEvent e) {
+        System.err.println("sortByPinyinItemAction not implemented yet");
+    }
+    private void sortByChineseItemAction(ActionEvent e) {
+        System.err.println("sortByChineseItemAction not implemented yet");
+    }
+    // Print
+    private void printSelectorDialogItemAction(ActionEvent e) {
+        System.err.println("printSelectorDialogItemAction not implemented yet");
+    }
+    private void printSelectionItemAction(ActionEvent e) {
+        System.err.println("printSelectionItemAction not implemented yet");
+    }
+    private void printAllItemAction(ActionEvent e) {
+        System.err.println("printAllItemAction not implemented yet");
+    }
+    // Select
+    private void selectAllItemAction(ActionEvent e) {
+        System.err.println("selectAllItemAction not implemented yet");
+    }
+    private void selectNoneItemAction(ActionEvent e) {
+        System.err.println("selectNoneItemAction not implemented yet");
+    }
+    private void selectOppositeItem(ActionEvent e) {
+        System.err.println("selectOppositeItem not implemented yet");
+    }
+    //</editor-fold>
     
     
     /**
